@@ -1,0 +1,12 @@
+##pytorch+cuda10的镜像
+sudo docker pull ufoym/deepo
+sudo docker pull ufoym/deepo:pytorch
+
+sudo nvidia-docker run --rm ufoym/deepo nvidia-smi
+
+sudo docker run --runtime=nvidia -it --ipc=host ufoym/deepo:pytorch bash
+sudo nvidia-docker run -it -v /host/data:/data -v /host/config:/config ufoym/deepo bash
+
+##pytorch+cuda90的镜像
+cd /data1/docker/pytorch_cuda
+sudo docker build -t pytorch_cu90:v1.0 .

@@ -1,0 +1,4 @@
+
+sudo docker ps -a  ##查看所有的docker容器
+
+sudo docker ps  ##查看正在运行的docker容器
