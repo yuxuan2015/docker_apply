@@ -1,0 +1,83 @@
+
+sudo docker build -t pytorch_cu90:v1.0 .
+
+##进入docker
+sudo docker run -it pytorch_cu90:v1.0 /bin/bash
+
+##安装java和hanlp
+mkdir -p /data/software && mkdir -p /usr/java
+
+
+##安装java
+###从外部拷入对应java安装包
+cd /data/lyy/software/java
+sudo docker cp jdk-8u161-linux-x64.tar.gz 7d24c58d713d:/data/software
+
+
+cd /data/lyy/software
+tar -zxvf jdk-8u161-linux-x64.tar.gz -C /usr/java
+
+##
+vim /etc/profile
+export JAVA_HOME=/usr/java/jdk1.8.0_161
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+
+source /etc/profile
+
+##加入系统环境变量
+vim ~/.bashrc
+
+export JAVA_HOME=/usr/java/jdk1.8.0_161
+export JRE_HOME=$JAVA_HOME/jre
+export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+
+source ~/.bashrc
+
+
+##配置pyhanlp
+python
+from pyhanlp import *
+会自动下载需要的data
+
+##替换pyhanlp中词典
+cd ~/anaconda3/lib/python3.6/site-packages/pyhanlp/static/data/dictionary/custom
+sudo docker cp CustomDictionary.txt  a851de0e313f:/usr/local/lib/python3.6/dist-packages/pyhanlp/static/data/dictionary/custom
+
+sudo docker cp Keywords.txt  a851de0e313f:/usr/local/lib/python3.6/dist-packages/pyhanlp/static/data/dictionary/custom
+
+
+cd /usr/local/lib/python3.6/dist-packages/pyhanlp/static/data/dictionary/custom
+rm -rf CustomDictionary.txt.bin
+
+cd /usr/local/lib/python3.6/dist-packages/pyhanlp/static
+vim hanlp.properties
+加入Keywords.txt
+
+## 测试hanlp
+from pyhanlp import *
+
+' '.join([str(term).split('/')[0] for term in HanLP.segment("借款审核通过后大概要多久才付款，怎么还不了款，能不能协商，免息券在哪，到账款进件，点击下一步，什么值得买，直系亲属")])
+
+
+##保存退出
+exit
+
+##提交修改
+sudo docker commit -m "add java and hanlp" 94c3a8236bca pytorch_cu90_hanlp:v2.0
+
+
+##挂载本地文件并运行docker
+sudo docker run -itd -v /data/lyy/NLP_projects/kefu_text_similarity:/data/projects pytorch_cu90_hanlp:v2.0 /bin/bash /data/projects/start_server.sh
+
+
+
+##保存容器
+cd /data/lyy/docker
+sudo docker save pytorch_cu90_hanlp:v2.0 > pytorch_cu90_hanlp
+
+##加载镜像
+sudo docker load < pytorch_cu90_hanlp
+Loaded image ID: sha256:e51129450b243cc3174d0afea48b21bdf55a766b7f16f74867a1aab24a77a223
