@@ -1,14 +1,13 @@
-
+1 创建pytorch_cu90镜像
 sudo docker build -t pytorch_cu90:v1.0 .
 
 ##进入docker
 sudo docker run -it pytorch_cu90:v1.0 /bin/bash
 
-##安装java和hanlp
+2 安装java和hanlp
 mkdir -p /data/software && mkdir -p /usr/java
 
-
-##安装java
+2.1安装java
 ###从外部拷入对应java安装包
 cd /data/lyy/software/java
 sudo docker cp jdk-8u161-linux-x64.tar.gz 7d24c58d713d:/data/software
@@ -36,8 +35,7 @@ export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 
 source ~/.bashrc
 
-
-##配置pyhanlp
+2.2 配置pyhanlp
 python
 from pyhanlp import *
 会自动下载需要的data
@@ -62,14 +60,14 @@ from pyhanlp import *
 ' '.join([str(term).split('/')[0] for term in HanLP.segment("借款审核通过后大概要多久才付款，怎么还不了款，能不能协商，免息券在哪，到账款进件，点击下一步，什么值得买，直系亲属")])
 
 
-##保存退出
+3 保存退出
 exit
 
 ##提交修改
 sudo docker commit -m "add java and hanlp" 94c3a8236bca pytorch_cu90_hanlp:v2.0
 
 
-##挂载本地文件并运行docker
+4 挂载本地文件并运行docker
 sudo docker run -itd -v /data/lyy/NLP_projects/kefu_text_similarity:/data/projects pytorch_cu90_hanlp:v2.0 /bin/bash /data/projects/start_server.sh
 
 
@@ -80,4 +78,3 @@ sudo docker save pytorch_cu90_hanlp:v2.0 > pytorch_cu90_hanlp
 
 ##加载镜像
 sudo docker load < pytorch_cu90_hanlp
-Loaded image ID: sha256:e51129450b243cc3174d0afea48b21bdf55a766b7f16f74867a1aab24a77a223
