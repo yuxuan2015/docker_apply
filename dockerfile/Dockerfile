@@ -1,94 +1,28 @@
-# ==================================================================
-# module list
-# ------------------------------------------------------------------
-# python        3.6    (apt)
-# pytorch       latest (pip)
-# ==================================================================
-
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
-ENV LANG C.UTF-8
-RUN APT_INSTALL="apt-get install -y --no-install-recommends" && \
-    PIP_INSTALL="python -m pip --no-cache-dir install --upgrade" && \
-    GIT_CLONE="git clone --depth 10" && \
-
-    rm -rf /var/lib/apt/lists/* \
-           /etc/apt/sources.list.d/cuda.list \
-           /etc/apt/sources.list.d/nvidia-ml.list && \
-
-    apt-get update && \
-
-# ==================================================================
-# tools
-# ------------------------------------------------------------------
-
-    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
-        build-essential \
-        apt-utils \
-        ca-certificates \
-        wget \
-        git \
-        vim \
-        && \
-
-    $GIT_CLONE https://github.com/Kitware/CMake ~/cmake && \
-    cd ~/cmake && \
-    ./bootstrap && \
-    make -j"$(nproc)" install && \
+FROM ubuntu:16.04
 
 
-# ==================================================================
-# python
-# ------------------------------------------------------------------
+##安装配置java
+ADD jdk-8u161-linux-x64.tar.gz /usr/local
 
-    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
-        software-properties-common \
-        && \
-    add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    DEBIAN_FRONTEND=noninteractive $APT_INSTALL \
-        python3.6 \
-        python3.6-dev \
-        python3-distutils-extra \
-        && \
-    wget -O ~/get-pip.py \
-        https://bootstrap.pypa.io/get-pip.py && \
-    python3.6 ~/get-pip.py && \
-    ln -s /usr/bin/python3.6 /usr/local/bin/python3 && \
-    ln -s /usr/bin/python3.6 /usr/local/bin/python && \
-    $PIP_INSTALL \
-        setuptools \
-        && \
-    $PIP_INSTALL \
-        numpy \
-        scipy \
-        pandas \
-        cloudpickle \
-        scikit-learn \
-        matplotlib \
-        Cython \
-        jieba \
-        && \
+###设置java 相关的环境变量
+ENV JAVA_HOME /usr/local/jdk1.8.0_161
+ENV JRE_HOME $JAVA_HOME/jre
+ENV CLASSPATH .:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar
+ENV PATH $PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 
-# ==================================================================
-# pytorch
-# ------------------------------------------------------------------
 
-    $PIP_INSTALL \
-        future \
-        numpy \
-        protobuf \
-        enum34 \
-        pyyaml \
-        typing \
-        torch \
-    	torchvision \
-        && \
+##安装配置python3.6
+RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && apt-get install -y python3.6 python3.6-dev python3-pip
 
-# ==================================================================
-# config & cleanup
-# ------------------------------------------------------------------
+RUN ln -sfn /usr/bin/python3.6 /usr/bin/python3 && ln -sfn /usr/bin/python3 /usr/bin/python && ln -sfn /usr/bin/pip3 /usr/bin/pip
 
-    ldconfig && \
-    apt-get clean && \
-    apt-get autoremove && \
-    rm -rf /var/lib/apt/lists/* /tmp/* ~/*
+###更新python-packages
+RUN python3.6 -m pip install --no-cache-dir -U pip
+RUN python3.6 -m pip install --no-cache-dir -U setuptools
+
+RUN python3.6 -m pip install numpy scipy pandas cloudpickle scikit-learn matplotlib Cython pyhanlp jieba sanic
+RUN python3.6 -m pip install future protobuf enum34 pyyaml pyyaml typing rasa
+ ##torch torchvision torchtext
+RUN export LC_ALL=C.UTF-8
+RUN hanlp
