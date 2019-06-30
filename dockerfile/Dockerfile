@@ -25,4 +25,5 @@ RUN python3.6 -m pip install numpy scipy pandas cloudpickle scikit-learn matplot
 RUN python3.6 -m pip install future protobuf enum34 pyyaml pyyaml typing rasa
  ##torch torchvision torchtext
 RUN export LC_ALL=C.UTF-8
-##RUN hanlp
+
+RUN hanlp

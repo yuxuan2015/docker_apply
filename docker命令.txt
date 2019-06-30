@@ -1,0 +1,58 @@
+sudo docker rm -f python3.6
+sudo docker build -t python3.6 .
+sudo docker run -it python3.6 /bin/bash 
+/data1/NLP_tools/HanLP/data-for-1.7.4
+
+sudo docker cp -r /data1/NLP_tools/HanLP/data-for-1.7.4/data 68a4c74a3230:/usr/local/lib/python3.6/dist-packages/pyhanlp/static
+sudo docker cp 68a4c74a3230:/usr/local/lib/python3.6/dist-packages/pyhanlp/static/hanlp.properties /data1/my_git/docker_apply/dockerfile
+
+##提交修改
+sudo docker commit 68a4c74a3230 pyhanlp
+
+##保存镜像到文件
+sudo docker save -o pyhanlp.tar  pyhanlp
+sudo docker save -o sanic_hanlp.tar  sanic_hanlp
+
+##载入镜像
+sudo load <pyhanlp.tar
+
+##上传pyhanlp镜像
+sudo docker pyhanlp push yuxuan2018/python3.6
+
+sudo docker tag sanic_hanlp:latest yuxuan2018/pyhanlp:v1
+sudo docker push yuxuan2018/pyhanlp:v1
+
+/usr/local/lib/python3.6/dist-packages/pyhanlp/static
+
+sudo docker pull java:8
+sudo docker run -it java:8 /bin/bash 
+
+
+sudo docker pull samurais/hanlp-api:latest
+
+
+
+sudo docker build -t sanic_hanlp .
+
+sudo docker run --name hanlp_segment -p 8000:8000 -d sanic_hanlp:latest
+
+sudo docker run -it sanic_hanlp /bin/bash 
+
+sudo docker run --name hanlp_segment -p 8000:8000 -d -it -v $(pwd):/app sanic_hanlp env LANG=C.UTF-8 python /app/app.py
+
+sudo docker stop hanlp_segment && sudo docker rm hanlp_segment
+
+
+
+sudo docker build -t pytoch .
+
+sudo docker run --rm -it --init \
+  --runtime=nvidia \
+  --ipc=host \
+  --user="$(id -u):$(id -g)" \
+  --volume="$PWD:/app" \
+  -e NVIDIA_VISIBLE_DEVICES=0 \
+  anibali/pytorch python3 main.py
+
+
+sudo docker run -it anibali/pytorch /bin/bash 
