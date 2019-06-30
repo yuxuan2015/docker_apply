@@ -2,10 +2,10 @@ FROM ubuntu:16.04
 
 
 ##安装配置java
-ADD jdk-8u161-linux-x64.tar.gz /usr/local
+ADD jdk-8u144-linux-x64.tar.gz /usr/local
 
 ###设置java 相关的环境变量
-ENV JAVA_HOME /usr/local/jdk1.8.0_161
+ENV JAVA_HOME /usr/local/jdk1.8.0_144
 ENV JRE_HOME $JAVA_HOME/jre
 ENV CLASSPATH .:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar
 ENV PATH $PATH:$JAVA_HOME/bin:$JRE_HOME/bin
@@ -25,4 +25,4 @@ RUN python3.6 -m pip install numpy scipy pandas cloudpickle scikit-learn matplot
 RUN python3.6 -m pip install future protobuf enum34 pyyaml pyyaml typing rasa
  ##torch torchvision torchtext
 RUN export LC_ALL=C.UTF-8
-RUN hanlp
+##RUN hanlp
