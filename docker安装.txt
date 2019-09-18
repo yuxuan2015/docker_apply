@@ -51,6 +51,7 @@ sudo pkill -SIGHUP dockerd
 sudo docker run --runtime=nvidia --rm nvidia/cuda:9.0-base nvidia-smi
 
 1.4 安装docker-compose
+https://github.com/docker/compose/releases
 下载最新版本的 docker-compose
 sudo curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose  
 更改二进制文件的权限，使其能够运行
