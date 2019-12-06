@@ -3,7 +3,7 @@
 添加--insecure-registry
 
 sudo gedit /lib/systemd/system/docker.service
-在ExecStart这一行添加如下语句：
+在ExecStart这一行的最后添加如下语句：
 --insecure-registry 对应的IP
 
 重启docker
