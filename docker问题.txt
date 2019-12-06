@@ -1,0 +1,11 @@
+1 docker pull镜像错误 "x509: certificate signed by unknown authority"
+解决方案：
+添加--insecure-registry
+
+sudo gedit /lib/systemd/system/docker.service
+在ExecStart这一行添加如下语句：
+--insecure-registry 对应的IP
+
+重启docker
+systemctl daemon-reload
+systemctl restart docker
