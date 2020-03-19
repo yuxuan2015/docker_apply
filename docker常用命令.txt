@@ -6,7 +6,7 @@ sudo docker ps  ##查看正在运行的docker容器
 转移数据目录
 ```
   service docker stop
-  mkdir /data1/Semantic_team/dockerData
+  mkdir /data1/Semantic_team/docker/dockerData
   sudo mv /var/lib/docker /data1/Semantic_team/docker/dockerData
   sudo ln -s /data1/Semantic_team/docker/dockerData/docker /var/lib/docker
   service docker start
