@@ -27,3 +27,8 @@ docker ps
 问题1：Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.40/containers/json: dial unix /var/run/docker.sock: connect: permission denied
 如果提示get ......dial unix /var/run/docker.sock权限不够，则修改/var/run/docker.sock权限
 sudo chmod a+rw /var/run/docker.sock
+
+问题2：
+WARNING: Error loading config file: /home/lyy/.docker/config.json: stat /home/lyy/.docker/config.json: permission denied
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "/home/$USER/.docker" -R
