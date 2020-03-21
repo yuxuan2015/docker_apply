@@ -58,3 +58,8 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.20.0/docker-c
 sudo chmod +x /usr/local/bin/docker-compose
 查看docker-compose的版本
 docker-compose --version
+
+docker-compose卸载非常简单只需把对应的二进制文件删除即可
+sudo rm /usr/local/bin/docker-compose
+pip卸载方式为
+pip uninstall docker-compose
