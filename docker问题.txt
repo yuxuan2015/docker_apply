@@ -28,3 +28,10 @@ E: 下载 https://nvidia.github.io/nvidia-container-runtime/stable/ubuntu16.04/a
 E: 下载 https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64/./nvidia-docker2_2.5.0-1_all.deb  server certificate verification failed. CAfile: /etc/ssl/certs/ca-certificates.crt CRLfile: none 失败
 解决方法：
 update-ca-certificates -f
+
+
+3 Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+
+解决办法
+systemctl daemon-reload
+sudo service docker restart
