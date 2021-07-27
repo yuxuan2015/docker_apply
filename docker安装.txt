@@ -73,6 +73,7 @@ https://github.com/docker/compose/releases
 sudo curl -L https://github.com/docker/compose/releases/download/1.20.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 更改二进制文件的权限，使其能够运行
 sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 查看docker-compose的版本
 docker-compose --version
 
