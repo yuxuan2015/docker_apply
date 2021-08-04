@@ -32,3 +32,13 @@ sudo chmod a+rw /var/run/docker.sock
 WARNING: Error loading config file: /home/lyy/.docker/config.json: stat /home/lyy/.docker/config.json: permission denied
 sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
 sudo chmod g+rwx "/home/$USER/.docker" -R
+
+5 解决docker pull 速度慢问题
+将docker镜像源修改为国内的：
+在 /etc/docker/daemon.json 文件中添加以下参数（没有该文件则新建）：
+{
+    "registry-mirrors": ["https://mj9kvemk.mirror.aliyuncs.com"]
+}
+服务重启：
+systemctl daemon-reload
+systemctl restart docker
