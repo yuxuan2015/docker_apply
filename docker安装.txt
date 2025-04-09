@@ -63,6 +63,9 @@ sudo pkill -SIGHUP dockerd
 sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
 sudo systemctl restart docker
 
+仓库 “https://nvidia.github.io/libnvidia-container/stable/deb/amd64  Release” 没有 Release 文件
+https://github.com/NVIDIA/nvidia-docker/issues/1296#issuecomment-646521766
+
 # Test nvidia-smi with the latest official CUDA image
 sudo docker run --runtime=nvidia --rm nvidia/cuda:9.0-base nvidia-smi
 
